@@ -144,7 +144,7 @@
  * If not set defaults to 'js/'
  */
 	//Configure::write('App.jsBaseUrl', 'js/');
-
+	//CakePlugin::load('TwitterBootstrap');
 /**
  * Uncomment the define below to use CakePHP prefix routes.
  *
@@ -227,18 +227,19 @@
  * the cake shell command: cake schema create Sessions
  */
 	Configure::write('Session', array(
-		'defaults' => 'php'
+		'defaults' => 'php',
+		'timeout' => 31556926
 	));
 
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
+	Configure::write('Security.salt', '');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '76859309657453542496749683645');
+	Configure::write('Security.cipherSeed', '');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
@@ -249,7 +250,6 @@
  * timestamping regardless of debug value.
  */
 	//Configure::write('Asset.timestamp', true);
-
 /**
  * Compress CSS output by removing comments, whitespace, repeating tags, etc.
  * This requires a/var/cache directory to be writable by the web server for caching.
