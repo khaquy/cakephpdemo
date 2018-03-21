@@ -114,7 +114,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		)); ?>
 		<?php echo $this->Form->input('field7', array(
 			'label' => 'Radio buttons',
-			'type' => 'radio',
+								'type' => 'radio',
 			'options' => array(
 				'1' => 'Option one is this and that¡ªbe sure to include why it\'s great',
 				'2' => 'Option two can is something else and selecting it will deselect option one',
