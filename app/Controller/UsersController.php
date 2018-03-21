@@ -41,6 +41,7 @@ public function info(){
 
 public function logout() {
     return $this->redirect($this->Auth->logout());
+    
 }
     public function view($id = null) {
         $this->User->id = $id;
@@ -76,7 +77,7 @@ public function logout() {
             $this->Flash->error(
                 __('The user could not be saved. Please, try again.')
             );
-        } else {
+      } else {
             $this->request->data = $this->User->findById($id);
             unset($this->request->data['User']['password']);
         }
