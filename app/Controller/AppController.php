@@ -31,4 +31,69 @@ App::uses('Controller', 'Controller');
  * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
+
+	  public $components = array(
+        'Flash','Session',
+       // 'Html' => array('className' => 'TwitterBootstrap.BootstrapHtml'),
+		//'Form' => array('className' => 'TwitterBootstrap.BootstrapForm'),
+		// 'Paginator' => array('className' => 'TwitterBootstrap.BootstrapPaginator'),
+        'Auth' => array(
+            'loginRedirect' => array(
+             'controller' => 'posts',
+                 'action' => 'index'
+
+                // 'controller' => 'Users',
+                // 'action' => 'info'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'pages',
+                'action' => 'display',
+                'home'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        )
+    );
+
+
+
+public function isAuthorized($user) {
+    // Admin can access every action
+    if (isset($user['role']) && $user['role'] === 'admin') {
+        return true;
+    }
+
+    // Default deny
+    return false;
+}
+  
+public function beforeFilter() {
+    parent::beforeFilter();
+    // Allow users to register and logout.
+    $this->Auth->allow('add', 'logout');
+
+    $this->Auth->allow('post', 'index');
+    // $this->Auth->loginAction = array('controller' => 'post', 'action' => 'index');
+   // $this->Auth->authorize = 'controller';
+    //$this->Auth->logoutRedirect = '/';
+}
+
+
+public function login() {
+    if ($this->request->is('post')) {
+        if ($this->Auth->login()) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
+        $this->Flash->error(__('Invalid username or password, try again'));
+    }
+}
+
+public function logout() {
+    return $this->redirect($this->Auth->logout());
+}
+
+
 }
