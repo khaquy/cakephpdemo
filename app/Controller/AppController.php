@@ -18,7 +18,9 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
+//App::uses('AbstractPasswordHasher', 'Controller/Component/Auth');
 App::uses('Controller', 'Controller');
 
 /**
@@ -34,25 +36,33 @@ class AppController extends Controller {
 
 	  public $components = array(
         'Flash','Session',
+
        // 'Html' => array('className' => 'TwitterBootstrap.BootstrapHtml'),
 		//'Form' => array('className' => 'TwitterBootstrap.BootstrapForm'),
 		// 'Paginator' => array('className' => 'TwitterBootstrap.BootstrapPaginator'),
         'Auth' => array(
             'loginRedirect' => array(
-             'controller' => 'posts',
-                 'action' => 'index'
+             // 'controller' => 'posts',
+             //     'action' => 'index',
 
-                // 'controller' => 'Users',
-                // 'action' => 'info'
+                 'controller' => 'users',
+                'action' => 'index'
             ),
+            // 'logoutRedirect' => array(
+            //     'controller' => 'pages',
+            //     'action' => 'display',
+            //     'home'
+
             'logoutRedirect' => array(
-                'controller' => 'pages',
-                'action' => 'display',
-                'home'
-            ),
+                'controller' => 'users',
+                'action' => 'login',
+                ),
+
+
             'authenticate' => array(
                 'Form' => array(
-                    'passwordHasher' => 'Blowfish'
+                      'passwordHasher' => 'BlowfishPasswordHasher',
+                       'passwordHasher' => 'Blowfish'
                 )
             )
         )
@@ -60,36 +70,38 @@ class AppController extends Controller {
 
 
 
-public function isAuthorized($user) {
-    // Admin can access every action
-    if (isset($user['role']) && $user['role'] === 'admin') {
-        return true;
-    }
+// public function isAuthorized($user) {
+//     // Admin can access every action
+//     if (isset($user['role']) && $user['role'] === 'admin') {
+//         return true;
+//     }
 
-    // Default deny
-    return false;
-}
+//     // Default deny
+//     return false;
+// }
   
 public function beforeFilter() {
     parent::beforeFilter();
+    //$this->Auth->allow('login');
     // Allow users to register and logout.
     $this->Auth->allow('add', 'logout');
 
-    $this->Auth->allow('post', 'index');
+    // $this->Auth->allow('post', 'index');
     // $this->Auth->loginAction = array('controller' => 'post', 'action' => 'index');
-   // $this->Auth->authorize = 'controller';
+  // $this->Auth->authorize = 'controller';
     //$this->Auth->logoutRedirect = '/';
 }
 
 
-public function login() {
-    if ($this->request->is('post')) {
-        if ($this->Auth->login()) {
-            return $this->redirect($this->Auth->redirectUrl());
-        }
-        $this->Flash->error(__('Invalid username or password, try again'));
-    }
-}
+// public function login() {
+//     if ($this->request->is('post')) {
+//         if ($this->Auth->login()) {
+//             //die('6666');
+//             return $this->redirect($this->Auth->redirectUrl());
+//         }
+//         $this->Flash->error(__('Invalid username or password, try again'));
+//     }
+// }
 
 public function logout() {
     return $this->redirect($this->Auth->logout());
